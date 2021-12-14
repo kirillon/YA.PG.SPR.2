@@ -7,10 +7,12 @@ import pygame
 from pygame import mouse
 
 TILE = 20
-FPS = 120
+FPS = 60
 RES = WIDTH, HEIGHT = 1600, 900
 W, H = WIDTH // TILE, HEIGHT // TILE
 f = 0
+x = 0
+y = 0
 pygame.init()
 all_sprites = pygame.sprite.Group()
 screen = pygame.display.set_mode(RES)
@@ -38,20 +40,40 @@ def load_image(name, colorkey=None):
     return image
 
 
-mouse_img = load_image("arrow.png")
+mouse_img = load_image("creature.png")
 while True:
 
-    screen.fill(pygame.color.Color("black"))
-    if mouse.get_focused():
-        mous.image = mouse_img
-        mous.rect = mous.image.get_rect()
-        mous.rect.x = mouse.get_pos()[0]
-        mous.rect.y = mouse.get_pos()[1]
-        all_sprites.draw(screen)
+    screen.fill(pygame.color.Color("white"))
+
+    all_sprites.update()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
+
+    mous.image = mouse_img
+
+    keyState = pygame.key.get_pressed()
+    mous.rect = mous.image.get_rect()
+
+    if keyState[pygame.K_UP]:
+        y -=10
+
+    if keyState[pygame.K_DOWN]:
+        y +=10
+
+    if keyState[pygame.K_LEFT]:
+        x -=10
+
+    if keyState[pygame.K_RIGHT]:
+
+        x +=10
+    mous.rect.x =x
+    mous.rect.y = y
+
+
+    all_sprites.draw(screen)
+
 
     pygame.display.flip()
     clock.tick(FPS)
